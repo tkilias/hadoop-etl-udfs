@@ -12,7 +12,7 @@ public class NativeHadoopLibUtils {
         // This path must exist at program startup and must be in LD_LIBRARY_PATH. Otherwise the dynamic linker seems to ignore it
         final String nativeHadoopLibDir = "/tmp/";
         NativeHadoopLibUtils.writeNativeHadoopLibs(nativeHadoopLibDir);
-        NativeHadoopLibUtils.addDirToJavaLibraryPath(nativeHadoopLibDir);
+        NativeHadoopLibUtils.addDirToJavaLibraryPath2(nativeHadoopLibDir);
         printEnv();
     }
 
@@ -70,6 +70,7 @@ public class NativeHadoopLibUtils {
      * See http://stackoverflow.com/questions/5419039/is-djava-library-path-equivalent-to-system-setpropertyjava-library-path
      * and http://fahdshariff.blogspot.jp/2011/08/changing-java-library-path-at-runtime.html
      */
+    @SuppressWarnings("unused")
     private static void addDirToJavaLibraryPath(String path) throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
         System.setProperty("java.library.path", path );
         Field fieldSysPath = ClassLoader.class.getDeclaredField( "sys_paths" );
@@ -80,7 +81,6 @@ public class NativeHadoopLibUtils {
     /**
      * This is another variant of addDirToJavaLibraryPath(). Currently unused, because the other should work.
      */
-    @SuppressWarnings("unused")
     private static void addDirToJavaLibraryPath2(String s) throws IOException {
         try {
             Field field = ClassLoader.class.getDeclaredField("usr_paths");
